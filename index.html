@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spesial Untukmu ❤️</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Canvas Confetti CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Sacramento&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        /* ==========================================================================
+           1. CUSTOM STYLES & TEMA UNGU AESTHETIC
+           ========================================================================== */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #2a0845 0%, #4b1248 35%, #6b21a8 70%, #a855f7 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            overflow-x: hidden;
+            color: #f3e8ff;
+        }
+
+        .font-handwriting {
+            font-family: 'Sacramento', cursive;
+        }
+
+        .font-playful {
+            font-family: 'Fredoka', sans-serif;
+        }
+
+        /* Particles Hearts Melayang di Background */
+        .heart-particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+            animation: floatUp 7s linear infinite;
+            opacity: 0.6;
+            filter: drop-shadow(0 0 6px rgba(192, 132, 252, 0.6));
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(105vh) scale(0.4) rotate(0deg);
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-10vh) scale(1.2) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Glassmorphism Card dengan Nuansa Ungu Transparan */
+        .glass-card {
+            background: rgba(46, 16, 101, 0.45);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(216, 180, 254, 0.25);
+            box-shadow: 0 20px 40px rgba(15, 3, 38, 0.5);
+        }
+
+        /* ==========================================================================
+           2. ANIMASI AMPLOP SURAT CINTA 3D
+           ========================================================================== */
+        .envelope-container {
+            perspective: 1000px;
+            width: 280px;
+            height: 200px;
+            position: relative;
+            margin: 20px auto 10px;
+            cursor: pointer;
+        }
+
+        .envelope-body {
+            width: 100%;
+            height: 100%;
+            background-color: #7e22ce;
+            border-radius: 12px;
+            position: relative;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+            overflow: visible;
+        }
+
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 0;
+            border-left: 140px solid transparent;
+            border-right: 140px solid transparent;
+            border-top: 110px solid #a855f7;
+            transform-origin: top;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 5;
+            filter: drop-shadow(0 2px 5px rgba(0,0,0,0.2));
+        }
+
+        .envelope-pocket {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 0;
+            border-left: 140px solid #6b21a8;
+            border-right: 140px solid #6b21a8;
+            border-top: 100px solid transparent;
+            border-bottom: 100px solid #581c87;
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+            z-index: 4;
+        }
+
+        .envelope-letter {
+            position: absolute;
+            bottom: 12px;
+            left: 15px;
+            right: 15px;
+            height: 170px;
+            background: #faf5ff;
+            border-radius: 10px;
+            padding: 16px;
+            color: #4c1d95;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            transition: transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1), z-index 0.1s 0.3s;
+            transform: translateY(0);
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .envelope-container.open .envelope-flap {
+            transform: rotateX(180deg);
+            z-index: 1;
+        }
+
+        .envelope-container.open .envelope-letter {
+            transform: translateY(-120px) scale(1.05);
+            z-index: 6;
+            pointer-events: auto;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        /* ==========================================================================
+           3. EFEK GLOWING BUTTON & INTERAKSI
+           ========================================================================== */
+        .btn-purple-glow {
+            background: linear-gradient(135deg, #a855f7 0%, #7e22ce 100%);
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+            transition: all 0.3s ease;
+        }
+        .btn-purple-glow:hover {
+            box-shadow: 0 0 30px rgba(192, 132, 252, 0.8);
+            transform: scale(1.05);
+        }
+
+        .audio-control-btn {
+            box-shadow: 0 8px 25px rgba(168, 85, 247, 0.4);
+        }
+
+        /* Style Khusus Tombol Enggak Sayang (Lari & Menghilang) */
+        #btn-no {
+            position: absolute;
+            transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            user-select: none;
+            touch-action: manipulation;
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-start min-h-screen p-4 md:p-8 relative selection:bg-purple-500 selection:text-white">
+
+    <!-- Container Utama Background Hearts Melayang -->
+    <div id="hearts-container"></div>
+
+    <!-- Floating Music Control Button -->
+    <div class="fixed top-4 right-4 z-50">
+        <button id="music-btn" onclick="toggleMusic()" class="audio-control-btn bg-purple-900/80 backdrop-blur-md border border-purple-400/40 text-purple-200 p-3.5 rounded-full flex items-center justify-center gap-2 hover:bg-purple-800 transition-all duration-300">
+            <i id="music-icon" class="fa-solid fa-music animate-pulse text-purple-300"></i>
+            <span id="music-text" class="text-xs font-semibold pr-1 hidden sm:inline">Putar Musik 🎵</span>
+        </button>
+    </div>
+
+    <!-- Audio Element -->
+    <audio id="bg-music" loop preload="auto">
+        <source src="/Users/arsa/Desktop/ketemuan nanti/nyaman.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Header / Judul Utama -->
+    <header class="text-center my-6 z-10 max-w-2xl">
+        <div class="inline-block px-4 py-1.5 bg-purple-900/50 border border-purple-400/30 rounded-full text-purple-200 text-xs md:text-sm font-medium mb-3 shadow-inner">
+            ✨ Ada kejutan kecil nich for U ✨
+        </div>
+        <h1 class="text-4xl md:text-6xl font-bold font-playful text-transparent bg-clip-text bg-gradient-to-r from-purple-200 via-fuchsia-200 to-pink-300 drop-shadow-lg mb-2">
+            Halo Sayangku! 💜
+        </h1>
+        <p class="text-purple-200/80 font-medium text-xs md:text-sm">
+            Halaman web kecil ini abangg buat dengan penuh rasa sayang khusus untuk adekk🐒.
+        </p>
+    </header>
+
+    <!-- Grid Konten -->
+    <div class="w-full max-w-4xl grid grid-cols-1 md:grid-cols-2 gap-6 z-10 mb-12">
+
+        <!-- CARD 1: Love Counter -->
+        <div class="glass-card rounded-3xl p-6 text-center flex flex-col justify-between transform hover:-translate-y-1 transition duration-300">
+            <div>
+                <div class="w-12 h-12 bg-purple-500/20 border border-purple-400/30 rounded-2xl flex items-center justify-center mx-auto mb-3 text-purple-300 text-xl shadow-inner">
+                    <i class="fa-solid fa-hourglass-half"></i>
+                </div>
+                <h2 class="text-xl font-bold text-purple-100 font-playful mb-1">Sudah Berapa Lama Bersama?</h2>
+                <p class="text-xs text-purple-300/70 mb-4">Setiap detik bersama adekk adalah momen berharga ✨</p>
+                
+                <div class="grid grid-cols-4 gap-2 my-4">
+                    <div class="bg-purple-900/60 border border-purple-500/30 text-purple-100 p-3 rounded-2xl">
+                        <span id="counter-days" class="block text-2xl md:text-3xl font-bold text-purple-200">0</span>
+                        <span class="text-[10px] uppercase font-semibold text-purple-300/80">Hari</span>
+                    </div>
+                    <div class="bg-purple-900/60 border border-purple-500/30 text-purple-100 p-3 rounded-2xl">
+                        <span id="counter-hours" class="block text-2xl md:text-3xl font-bold text-purple-200">0</span>
+                        <span class="text-[10px] uppercase font-semibold text-purple-300/80">Jam</span>
+                    </div>
+                    <div class="bg-purple-900/60 border border-purple-500/30 text-purple-100 p-3 rounded-2xl">
+                        <span id="counter-minutes" class="block text-2xl md:text-3xl font-bold text-purple-200">0</span>
+                        <span class="text-[10px] uppercase font-semibold text-purple-300/80">Menit</span>
+                    </div>
+                    <div class="bg-purple-900/60 border border-purple-500/30 text-purple-100 p-3 rounded-2xl">
+                        <span id="counter-seconds" class="block text-2xl md:text-3xl font-bold text-purple-200">0</span>
+                        <span class="text-[10px] uppercase font-semibold text-purple-300/80">Detik</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4 pt-3 border-t border-purple-500/20 flex items-center justify-center gap-2">
+                <label for="start-date" class="text-xs text-purple-300 font-medium">Ubah Tanggal Jadian:</label>
+                <input type="date" id="start-date" value="2024-10-24" class="text-xs bg-purple-950/70 border border-purple-400/40 rounded-lg p-1.5 text-purple-200 focus:outline-none focus:ring-2 focus:ring-purple-400">
+            </div>
+        </div>
+
+        <!-- CARD 2: Amplop Surat Cinta 3D -->
+        <div class="glass-card rounded-3xl p-6 flex flex-col items-center justify-between text-center transform hover:-translate-y-1 transition duration-300">
+            <div>
+                <h2 class="text-xl font-bold text-purple-100 font-playful mb-1">Ada Surat Untuk Adekkk 💌</h2>
+                <p class="text-xs text-purple-300/70">Klik amplop di bawah ini untuk membukanya!</p>
+            </div>
+            
+            <div class="envelope-container" id="envelope" onclick="toggleEnvelope()">
+                <div class="envelope-body">
+                    <div class="envelope-flap"></div>
+                    <div class="envelope-letter text-left flex flex-col justify-between">
+                        <div>
+                            <p class="text-xs font-bold text-purple-800 mb-1">Hai Maniskuu, 💕</p>
+                            <p class="text-[11px] text-purple-950 leading-relaxed font-medium">
+                                Terima kasih ya sudah hadir dan melengkapi hari-harinya mass. adekkk selalu jadi alasan abangg tersenyum every dayy. Tetap sama-sama terus ya, I Love You So Muchhhhh babyyyhhh! 💜
+                            </p>
+                        </div>
+                        <p class="text-[10px] text-right font-bold text-purple-700 italic">- Dari : Abanggggg😘😎</p>
+                    </div>
+                    <div class="envelope-pocket"></div>
+                </div>
+            </div>
+
+            <p class="text-[11px] text-purple-300/80 italic mt-1" id="envelope-hint">✨ Klik amplop untuk buka / tutup ✨</p>
+        </div>
+
+        <!-- CARD 3: Generator Alasan Sayang -->
+        <div class="glass-card rounded-3xl p-6 text-center flex flex-col justify-between transform hover:-translate-y-1 transition duration-300">
+            <div>
+                <div class="w-12 h-12 bg-purple-500/20 border border-purple-400/30 rounded-2xl flex items-center justify-center mx-auto mb-3 text-purple-300 text-xl shadow-inner">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                </div>
+                <h2 class="text-xl font-bold text-purple-100 font-playful mb-1">Kenapa Aku Sayang Kamu? 🤔</h2>
+                <p class="text-xs text-purple-300/70 mb-4">Klik tombol di bawah untuk cari tahu alasannya!</p>
+                
+                <div class="bg-purple-950/50 border border-purple-400/30 rounded-2xl p-4 min-h-[90px] flex items-center justify-center shadow-inner">
+                    <p id="reason-text" class="text-sm font-medium text-purple-200 italic">
+                        "Klik tombol di bawah yaa..."
+                    </p>
+                </div>
+            </div>
+
+            <button onclick="generateReason()" class="mt-4 bg-purple-600 hover:bg-purple-500 text-white font-semibold py-2.5 px-6 rounded-2xl text-sm transition-all duration-300 active:scale-95 shadow-md flex items-center justify-center gap-2 mx-auto border border-purple-400/30">
+                <i class="fa-solid fa-shuffle"></i> Acak Alasan
+            </button>
+        </div>
+
+        <!-- CARD 4: Pertanyaan Penting dengan Tombol Lari & Menghilang -->
+        <div class="glass-card rounded-3xl p-6 text-center flex flex-col justify-between relative overflow-hidden transform hover:-translate-y-1 transition duration-300 min-h-[280px]" id="question-card">
+            <div>
+                <div class="w-12 h-12 bg-purple-500/20 border border-purple-400/30 rounded-2xl flex items-center justify-center mx-auto mb-3 text-purple-300 text-xl shadow-inner">
+                    <i class="fa-solid fa-heart-circle-bolt"></i>
+                </div>
+                <h2 class="text-xl font-bold text-purple-100 font-playful mb-1">Pertanyaan Penting! 🤫</h2>
+                <p class="text-sm font-semibold text-purple-200 mt-2">Apakah dedek sayang banget sama abangg?</p>
+            </div>
+
+            <!-- Teks Respon Lucu saat Tombol "Enggak Sayang" Diklik/Didekati -->
+            <div class="min-h-[24px]">
+                <p id="dodging-response" class="text-xs font-semibold text-pink-300 transition-all duration-200 opacity-0"></p>
+            </div>
+
+            <!-- Container Area Interaksi Tombol -->
+            <div class="relative w-full h-[100px] flex items-center justify-center my-2" id="btn-container">
+                <!-- Tombol "YA" -->
+                <button onclick="sayYes()" class="btn-purple-glow text-white font-bold py-3 px-8 rounded-2xl text-base z-20 transform hover:scale-110 active:scale-95 transition-all">
+                    Ya, Sayang Banget aw aw aw! 💖
+                </button>
+
+                <!-- Tombol "Enggak Sayang" (Akan Lari saat didekati & Menghilang setelah 2x klik) -->
+                <button id="btn-no" onclick="handleNoClick()" class="bg-purple-950/90 border border-purple-400/50 text-purple-200 font-semibold py-2.5 px-5 rounded-2xl text-sm z-10 shadow-lg hover:bg-purple-900">
+                    Enggak Sayang 😜
+                </button>
+            </div>
+
+            <p class="text-[11px] text-purple-300/60 italic" id="hint-text">Coba tekan tombol "Enggak Sayang" kalau bisa, nyonyett 🐒😜</p>
+        </div>
+
+    </div>
+
+    <!-- MODAL SELEBRASI KETIKA KLIK "YA" -->
+    <div id="celebration-modal" class="fixed inset-0 bg-black/70 backdrop-blur-md z-50 flex items-center justify-center hidden opacity-0 transition-all duration-300">
+        <div class="bg-purple-950 border border-purple-400/40 rounded-3xl p-8 max-w-sm w-full mx-4 text-center shadow-2xl transform scale-90 transition-all duration-300 text-purple-100" id="modal-content">
+            <div class="w-20 h-20 bg-purple-500/30 border border-purple-400/40 rounded-full flex items-center justify-center mx-auto mb-4 text-purple-300 text-4xl animate-bounce">
+                💖
+            </div>
+            <h3 class="text-2xl font-bold font-playful text-purple-200 mb-2">ABANG KNOW PASTI SAYANG KAN! 😋😍</h3>
+            <p class="text-sm text-purple-300/90 mb-6 leading-relaxed">
+                Makasih yaaa sudah mencintai aabangg inihh! abangg janji bakal terus bikin dedekkk bahagia dan tersenyum setiap hari. Love you to the moon and back cintakuuu kasihhhhkuuu! 🌙💜
+            </p>
+            <button onclick="closeModal()" class="w-full btn-purple-glow text-white font-bold py-3 rounded-2xl shadow-lg transition duration-200">
+                Tutup, Peluk dan Cium Akuhh 🤗😋
+            </button>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        /* 1. MUSIC PLAYER CONTROLLER */
+        const bgMusic = document.getElementById('bg-music');
+        const musicIcon = document.getElementById('music-icon');
+        const musicText = document.getElementById('music-text');
+        let isMusicPlaying = false;
+
+        function toggleMusic() {
+            if (isMusicPlaying) {
+                bgMusic.pause();
+                musicIcon.classList.remove('fa-compact-disc', 'fa-spin');
+                musicIcon.classList.add('fa-music');
+                musicText.innerText = "Putar Musik 🎵";
+                isMusicPlaying = false;
+            } else {
+                playMusic();
+            }
+        }
+
+        function playMusic() {
+            bgMusic.play().then(() => {
+                isMusicPlaying = true;
+                musicIcon.classList.remove('fa-music');
+                musicIcon.classList.add('fa-compact-disc', 'fa-spin');
+                musicText.innerText = "Musik Diputar 🎶";
+            }).catch(error => {
+                console.log("Autoplay dicegah browser.");
+            });
+        }
+
+        document.body.addEventListener('click', function autoPlayOnFirstInteraction() {
+            if (!isMusicPlaying) {
+                playMusic();
+            }
+            document.body.removeEventListener('click', autoPlayOnFirstInteraction);
+        }, { once: true });
+
+
+        /* 2. AMPLOP SURAT CINTA 3D */
+        function toggleEnvelope() {
+            const envelope = document.getElementById('envelope');
+            envelope.classList.toggle('open');
+        }
+
+
+        /* 3. TOMBOL "ENGGAK SAYANG" (LARI & MENGHILANG SETELAH 2X KLIK) */
+        const btnNo = document.getElementById('btn-no');
+        const btnContainer = document.getElementById('btn-container');
+        const dodgingResponse = document.getElementById('dodging-response');
+        const hintText = document.getElementById('hint-text');
+        let noClickCount = 0;
+
+        const funnyResponses = [
+            "Eits, mau pencet mana tuh? 😜",
+            "Gak bisa diklik wlee! 🤪",
+            "Tombolnya kabur lagii! 🙈",
+            "Cuma ada pilihan 'Ya Sayang'! 🥰",
+            "Ups, hampir aja kena! 😆"
+        ];
+
+        // Set posisi awal tombol 'Enggak Sayang' di samping tombol 'Ya'
+        function initNoButtonPosition() {
+            btnNo.style.right = '15px';
+            btnNo.style.top = '50%';
+            btnNo.style.transform = 'translateY(-50%)';
+        }
+
+        // Pindahkan tombol ke posisi acak di dalam container
+        function moveButton() {
+            if (noClickCount >= 2) return; // Jika sudah hilang, tidak lari lagi
+
+            const containerRect = btnContainer.getBoundingClientRect();
+            const btnRect = btnNo.getBoundingClientRect();
+
+            const padding = 8;
+            const maxX = containerRect.width - btnRect.width - padding;
+            const maxY = containerRect.height - btnRect.height - padding;
+
+            const randomX = Math.max(padding, Math.floor(Math.random() * maxX));
+            const randomY = Math.max(padding, Math.floor(Math.random() * maxY));
+
+            btnNo.style.right = 'auto';
+            btnNo.style.left = `${randomX}px`;
+            btnNo.style.top = `${randomY}px`;
+            btnNo.style.transform = 'none';
+
+            // Tampilkan pesan reaktif lucu
+            const randomMsg = funnyResponses[Math.floor(Math.random() * funnyResponses.length)];
+            showResponse(randomMsg);
+        }
+
+        function showResponse(msg) {
+            dodgingResponse.innerText = msg;
+            dodgingResponse.style.opacity = '1';
+            setTimeout(() => {
+                dodgingResponse.style.opacity = '0';
+            }, 1800);
+        }
+
+        // Jalankan animasi lari saat mouse mengarah ke tombol / disentuh
+        btnNo.addEventListener('mouseenter', moveButton);
+        btnNo.addEventListener('touchstart', function(e) {
+            e.preventDefault();
+            moveButton();
+        });
+
+        // Handler saat tombol 'Enggak Sayang' berhasil diklik
+        function handleNoClick() {
+            noClickCount++;
+
+            if (noClickCount === 1) {
+                showResponse("Waduh berhasil diklik 1x! Coba lagi kalau bisa 😝");
+                moveButton();
+            } else if (noClickCount >= 2) {
+                // Klik ke-2: Animasi pudar lalu hilangkan tombol dari layar
+                showResponse("Tombol 'Enggak' menyerah dan MENGHILANG! Bwahaha 😈");
+                btnNo.style.opacity = '0';
+                btnNo.style.transform = 'scale(0)';
+                btnNo.style.pointerEvents = 'none';
+                
+                setTimeout(() => {
+                    btnNo.style.display = 'none';
+                    if (hintText) {
+                        hintText.innerText = "Nah, sekarang cuma ada satu pilihan yaitu 'Ya, Sayang Banget!' 💖";
+                    }
+                }, 300);
+            }
+        }
+
+
+        /* 4. GENERATOR ALASAN SAYANG */
+        const reasons = [
+            "Karena Adekk selalu punya cara bikin Abangg tersenyum meski hari lagi berat. 😊",
+            "Muka Adekkk kalau lagi ngambek atau bingung itu gemesshhh bangetttq! 🥺",
+            "Karena Adekk itu orang paling sabar hadapin tingkah aneh Abangg. ✨",
+            "Suara tawa Adekk itu melodi favorit abangg di dunia! 🎶",
+            "Karena  bareng Adekk hari hari abang penuhh ceriaa. 😫",
+            "Adekk itu hangat, penyayang, dan selalu bikin abangg merasa enyakkk. 🤫",
+            "Karena cuma Adekk yang paham humor absurd abangg! 🤣",
+            "Setiap detik sama Adekk rasanya nggak pernah bosennn. 💕",
+            "Sederhana aja: Karena Adekk adalah Adekk, dan Abangg sayang buaangettt ngett ngett! ❤️"
+        ];
+
+        function generateReason() {
+            const textElem = document.getElementById('reason-text');
+            const randomIndex = Math.floor(Math.random() * reasons.length);
+            
+            textElem.style.opacity = '0';
+            setTimeout(() => {
+                textElem.innerText = `"${reasons[randomIndex]}"`;
+                textElem.style.opacity = '1';
+            }, 200);
+        }
+
+
+        /* 5. LOVE COUNTER */
+        function updateCounter() {
+            const startDateInput = document.getElementById('start-date').value;
+            const startDate = new Date(startDateInput);
+            const now = new Date();
+            
+            const diff = now - startDate;
+
+            if (diff < 0) {
+                document.getElementById('counter-days').innerText = '0';
+                document.getElementById('counter-hours').innerText = '0';
+                document.getElementById('counter-minutes').innerText = '0';
+                document.getElementById('counter-seconds').innerText = '0';
+                return;
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((diff / 1000 / 60) % 60);
+            const seconds = Math.floor((diff / 1000) % 60);
+
+            document.getElementById('counter-days').innerText = days;
+            document.getElementById('counter-hours').innerText = hours;
+            document.getElementById('counter-minutes').innerText = minutes;
+            document.getElementById('counter-seconds').innerText = seconds;
+        }
+
+        document.getElementById('start-date').addEventListener('change', updateCounter);
+        setInterval(updateCounter, 1000);
+
+
+        /* 6. SELEBRASI CONFETTI KETIKA KLIK "YA" */
+        function sayYes() {
+            const modal = document.getElementById('celebration-modal');
+            const modalContent = document.getElementById('modal-content');
+            
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modalContent.classList.remove('scale-90');
+                modalContent.classList.add('scale-100');
+            }, 10);
+
+            const duration = 3.5 * 1000;
+            const animationEnd = Date.now() + duration;
+
+            (function frame() {
+                confetti({
+                    particleCount: 6,
+                    angle: 60,
+                    spread: 60,
+                    origin: { x: 0 },
+                    colors: ['#a855f7', '#c084fc', '#f472b6', '#ffffff']
+                });
+                confetti({
+                    particleCount: 6,
+                    angle: 120,
+                    spread: 60,
+                    origin: { x: 1 },
+                    colors: ['#a855f7', '#c084fc', '#f472b6', '#ffffff']
+                });
+
+                if (Date.now() < animationEnd) {
+                    requestAnimationFrame(frame);
+                }
+            })();
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('celebration-modal');
+            const modalContent = document.getElementById('modal-content');
+            
+            modal.classList.add('opacity-0');
+            modalContent.classList.remove('scale-100');
+            modalContent.classList.add('scale-90');
+            
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+
+        /* 7. PARTICLES HEART MELAYANG DI BACKGROUND UNGU */
+        function createHearts() {
+            const container = document.getElementById('hearts-container');
+            const heartIcons = ['💜', '💖', '✨', '💕', '🌸'];
+
+            for (let i = 0; i < 18; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('heart-particle');
+                heart.innerText = heartIcons[Math.floor(Math.random() * heartIcons.length)];
+                
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.animationDelay = Math.random() * 5 + 's';
+                heart.style.animationDuration = (Math.random() * 3 + 5) + 's';
+                heart.style.fontSize = (Math.random() * 14 + 14) + 'px';
+
+                container.appendChild(heart);
+            }
+        }
+
+        window.onload = function() {
+            createHearts();
+            updateCounter();
+            initNoButtonPosition();
+        };
+    </script>
+</body>
+</html>
